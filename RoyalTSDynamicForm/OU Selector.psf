@@ -371,8 +371,19 @@ function Get-AHCOUTree
 	}
 }
 
+function get-resultingOU
+{
+	if ($checkboxUseDomainRootInstead.CheckState -eq 'Checked')
+	{
+		$script:selectedOU = $script:selectedDomainRoot.trim()
+	}
+	else
+	{
+		$script:selectedOU = $treeview1.SelectedNode.Name.tostring()
+	}
+}
+
 $formOUSelection_Load={
-	#TODO: Initialize Form Controls here
 	$treeview1.Nodes.clear()
 	Get-AHCOUTree
 	$preReverse = [System.Collections.arraylist]@()
@@ -397,7 +408,6 @@ $formOUSelection_Load={
 	}
 }
 
-#region Control Helper Functions
 function Get-CheckedNode
 {
 <#
@@ -438,8 +448,6 @@ function Get-CheckedNode
 	}
 }
 
-#endregion
-
 $treeview1_AfterSelect=[System.Windows.Forms.TreeViewEventHandler]{
 	
 	[System.Windows.Forms.application]::DoEvents
@@ -453,35 +461,15 @@ $treeview1_AfterSelect=[System.Windows.Forms.TreeViewEventHandler]{
 		$treeview1.SelectedNode.Nodes.add($obj2)
 	}
 	
-}#end treeview1_AfterSelect
+}
 
 $buttonOk_Click={
-	if ($checkboxUseDomainRootInstead.CheckState -eq 'Checked')
-	{
-		$script:selectedOU = $script:selectedDomainRoot.trim()
-	}
-	else
-	{
-		$script:selectedOU = $treeview1.SelectedNode.Name.tostring()
-	}
+	get-resultingOU
 }
 
 $formOUSelection_FormClosing=[System.Windows.Forms.FormClosingEventHandler]{
-	if ($checkboxUseDomainRootInstead.CheckState -eq 'Checked')
-	{
-		$script:selectedOU = $script:selectedDomainRoot.trim()
-	}
-	else
-	{
-		$script:selectedOU = $treeview1.SelectedNode.Name.tostring()
-	}
-} #end formOUSelection_FormClosing
-
-$checkboxUseDomainRootInstead_CheckedChanged={
-	#TODO: Place custom script here
-	
-}#end checkboxUseDomainRootInstead_CheckedChanged
-]]></Code>
+	get-resultingOU
+}]]></Code>
   <Mode>1</Mode>
   <Assemblies />
 </File>

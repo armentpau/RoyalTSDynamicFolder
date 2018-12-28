@@ -1,6 +1,10 @@
 ﻿#--------------------------------------------
 # Declare Global Variables and Functions here
 #--------------------------------------------
+
+#the below are the default port numbers for the various connection methods
+#this is done through a hash table to allow for easily being able to update the port assignments
+#should that be needed as well as ability to easily and quickly look up the data using the has table
 $hashPorts = @{
 	"SecureGateway" = 22
 	"RoyalServer" = 54899 
